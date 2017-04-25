@@ -22,5 +22,17 @@ module.exports = {
           });
         }
       });
+  },
+  global: function(req, res, next) {
+    jwt.verify(req.headers.token, 'secret',
+      function(err, decoded) {
+        if (decoded) {
+          next();
+        } else {
+          res.json({
+            message: 'Authentication failed. Your need signup.'
+          });
+        }
+      });
   }
 }
