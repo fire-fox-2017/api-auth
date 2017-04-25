@@ -1,6 +1,6 @@
 var model = require('../models')
-const passwordHash = require('password-hash')
-const jwt = require('jsonwebtoken')
+var passwordHash = require('password-hash')
+var jwt = require('jsonwebtoken')
 var methods = {}
 
 methods.insertOne = (req, res, next) => {
@@ -76,7 +76,7 @@ methods.deleteById = (req, res, next) => {
         })
 } //deleteById
 
-methods.register = (req, res, next) => {
+methods.signup = (req, res, next) => {
     let pwdHash = req.body.password
     // console.log(pwdHash);
     model.User.create({
@@ -92,9 +92,9 @@ methods.register = (req, res, next) => {
                 error
             })
         })
-} // register
+} // signup
 
-methods.login = (req, res, next) => {
+methods.signin = (req, res, next) => {
     model.User.findOne({
             where: {
                 username: req.body.username
@@ -106,9 +106,10 @@ methods.login = (req, res, next) => {
             if (passwordHash.verify(pwdHash, record.password)) {
                 // secret itu kata khusus utk mengunci tokennya
 
-                // mengassign data recordtojson menjadi object yg baru
+                // recordtojson : mengassign data user menjadi object yg baru
                 let data = Object.assign({}, record.toJSON())
                 console.log(data);
+                // utk delete passwordnya
                 delete data.password
 
                 let token = jwt.sign(data, 'secret', {
@@ -131,6 +132,6 @@ methods.login = (req, res, next) => {
                 error
             })
         })
-} //login
+} //signin
 
 module.exports = methods
