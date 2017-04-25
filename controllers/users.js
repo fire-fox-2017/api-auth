@@ -1,6 +1,7 @@
 const db = require('../models');
 const passwordHash = require('password-hash');
 const jwt = require('jsonwebtoken');
+const authHelpers = require('../helpers/auth');
 const methods = {};
 
 methods.getAll = (req, res) => {
@@ -30,6 +31,21 @@ methods.signUp = (req, res, next) => {
     is_admin: req.body.role})
   .then(() => {
     res.send('success sign up a new user');
+  })
+  .catch(err => {
+    res.send(err);
+  })
+}
+
+methods.signIn = (req, res, next) => {
+  db.User.findOne({where: {username: req.body.username}})
+  .then(user => {
+    if(passwordHash.verify(req.body.password, user.password)) {
+      var token = jwt.sign({username: user.username, is_admin: user.is_admin, id:user.id}, 'secret', {expiresIn: '1h'});
+      res.send(token);
+    } else {
+      res.send('Password is wrong');
+    }
   })
   .catch(err => {
     res.send(err);
