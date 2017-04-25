@@ -1,4 +1,5 @@
 const db = require('../models');
+const passwordHas = require('password-hash')
 const methods = {};
 
 methods.getAll = (req, res) => {
