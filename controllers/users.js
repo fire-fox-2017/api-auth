@@ -1,5 +1,6 @@
 const db = require('../models');
 const passwordHash = require('password-hash')
+const jwt = require('jsonwebtoken');
 const methods = {};
 
 methods.getAll = (req, res) => {
@@ -24,7 +25,7 @@ methods.findId = (req, res) => {
 
 methods.signUp = (req, res, next) => {
   db.User.create({
-    username: username,
+    username: req.body.username,
     password:passwordHash.generate(req.body.password),
     is_admin: req.body.role})
   .then(() => {
