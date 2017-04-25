@@ -1,5 +1,5 @@
 const db = require('../models');
-const passwordHash = require('password-hash')
+const passwordHash = require('password-hash');
 const jwt = require('jsonwebtoken');
 const methods = {};
 
