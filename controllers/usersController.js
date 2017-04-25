@@ -61,7 +61,7 @@ methode.getAllData = function(req, res, next) {
   .then((query)=>{
     res.send(query)
   })
-} ;
+};
 
 methode.getDataById = function(req, res, next) {
   models.User.findOne({

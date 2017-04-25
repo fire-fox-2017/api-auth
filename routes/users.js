@@ -7,10 +7,11 @@ const jwtHelper = require('../helper/jwthelper');
 /* GET users listing. */
 router.post('/api/signup', controller.signup);
 router.post('/api/signin', controller.signin);
-router.post('/api/users',jwtHelper.check_token, controller.insert);
 router.get('/api/users',jwtHelper.check_token, controller.getAllData);
-router.get('/api/users/:id', controller.getDataById);
+router.post('/api/users',jwtHelper.check_token, controller.insert);
+
+router.get('/api/users/:id', jwtHelper.check_token_global,controller.getDataById);
 router.delete('/api/users/:id',jwtHelper.check_token, controller.delete);
-router.put('/api/users/:id',controller.updates);
+router.put('/api/users/:id',jwtHelper.check_token_global, controller.updates);
 
 module.exports = router;
