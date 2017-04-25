@@ -4,7 +4,12 @@ var jwt = require('jsonwebtoken')
 var methods = {}
 
 methods.insertOne = (req, res, next) => {
-    model.User.create(req.body)
+    let pwdHash = req.body.password
+    model.User.create({
+            username: req.body.username,
+            password: passwordHash.generate(pwdHash),
+            role: req.body.role
+        })
         .then(record => {
             res.json(record)
         })
