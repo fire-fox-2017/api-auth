@@ -2,6 +2,7 @@ const models = require('../models');
 const passHash = require('password-hash');
 const jwt = require('jsonwebtoken');
 
+
 var methode = {}
 
 
@@ -39,12 +40,13 @@ methode.signin = (req, res, next)=>{
   })
   .then((query)=>{
     if(passHash.verify(req.body.password, query.password)){
-      var myToken = jwt.sign({username : query.username}, 'secret', {expiresIn : 1});
+      var myToken = jwt.sign({username : query.username, access:query.access}, 'secret', {expiresIn : '1h'});
       res.send({
         'token' : myToken,
         'user_id' : query.id,
         'username' : query.username,
-        'name' : query.firstname+" "+query.lastname
+        'name' : query.firstname+" "+query.lastname,
+        'access' : query.access
       })
     }else{
       res.send('username or password is wrong')
