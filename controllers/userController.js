@@ -48,7 +48,12 @@ methods.getById = (req, res, next) => {
 } // getById
 
 methods.updateById = (req, res, next) => {
-    model.User.update(req.body, {
+    let pwdHash = req.body.password
+    model.User.update({
+            username: req.body.username,
+            password: passwordHash.generate(pwdHash),
+            role: req.body.role
+        }, {
             where: {
                 id: req.params.id
             }
