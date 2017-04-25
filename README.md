@@ -6,7 +6,7 @@ Create Date : Selasa, 25 April 2017
 
 Description : API Auth dengan CRUD dan Authentication password dengan token
 
-Acces via localhost:3000/api/users
+Acces via localhost:3000
 
 Install Step :
 - create folder api-auth
@@ -15,9 +15,9 @@ Install Step :
 - npm install
 - npm install --save sequelize sequelize-cli pg jsonwebtoken password-hash
 - sequelize init
-- sequelize model:craete --name Users --attribute username:string,password:string,role:string,email:string
+- sequelize model:create --name Users --attribute username:string,password:string,role:string,email:string
 - sequelize db:migrate
-- sequelize seed:craete --name seed-users-dummy
+- sequelize seed:create --name seed-users-dummy
 - sequelize db:seed --seed seed-users-dummy
 
 

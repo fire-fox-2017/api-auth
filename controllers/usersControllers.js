@@ -46,7 +46,7 @@ module.exports = {
   update: (req, res, next) => {
     let id = req.params.id;
     let username = req.body.username;
-    let password = req.body.password;
+    let password = passwordHash.generate(req.body.password);
     let role = req.body.role;
     let email = req.body.email;
     db.User.update({
@@ -66,7 +66,6 @@ module.exports = {
   },
   signup: (req, res, next) => {
     let username = req.body.username;
-    console.log('Cekkkk ' + req.body.password);
     let password = passwordHash.generate(req.body.password);
     let role = req.body.role;
     let email = req.body.email;
