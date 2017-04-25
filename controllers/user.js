@@ -103,6 +103,7 @@ let control = {
 
 module.exports = control;
 
-/* user:gurame pass:bakar role:user
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imd1cmFtZSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNDkzMTE0NjM1LCJleHAiOjE0OTMxMTgyMzV9.ZjEBGTkt9zKlWvkr8wfnotNvdupnbNBe78h7NJrGzgQ
+/*
+user:gurame pass:bakar role:user
+user:ivan pass:habibie role:admin
 */
