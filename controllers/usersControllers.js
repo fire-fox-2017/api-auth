@@ -1,5 +1,6 @@
 var db = require('../models');
 var passwordHash = require('password-hash');
+var jwt = require('jsonwebtoken');
 
 module.exports = {
   getall: (req, res, next) => {
@@ -79,8 +80,8 @@ module.exports = {
     }).catch(err => {
       res.send(err);
     })
-  }
-  signup: (req, res, next) => {
+  },
+  signin: (req, res, next) => {
     let username = req.body.username;
     let password = req.body.password;
     console.log(`username ${username}`);
@@ -93,9 +94,15 @@ module.exports = {
           message: 'Authentication failed. User not found.'
         });
       } else if (user) {
-        if (passwordHash.verify(password, user.password)) {} else {
+        if (passwordHash.verify(password, user.password)) {
+          var token = jwt.sign(JSON.stringify(user), 'secret');
           res.json({
-            success: false,
+            success: true,
+            message: 'Enjoy your token!',
+            token: token
+          });
+        } else {
+          res.send({
             message: 'Authentication failed. Wrong password.'
           });
         }
