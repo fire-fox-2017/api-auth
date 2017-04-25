@@ -1,5 +1,5 @@
 # api-auth
-A simple demonstration of REST API AUTH using Express.JS
+A simple demonstration of REST API AUTH using ExpressJS and jsonwebtoken
 
 ### Installation
 ```javascript
