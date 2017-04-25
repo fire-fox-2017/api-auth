@@ -4,7 +4,9 @@ const jwt = require('jsonwebtoken');
 var passwordHash = require('password-hash');
 
 
+
 method.getAllUser = function(req, res) {
+
     db.User.findAll()
         .then(data => {
             res.send(data)
@@ -80,12 +82,7 @@ method.signIn = (req, res) => {
                 res.send('username not found');
             } else {
                 if (passwordHash.verify(req.body.password, data.password)) {
-                    let token = jwt.sign({
-                        username: data.username,
-                        role: data.role
-                    }, 'rahasia', {
-                        expiresIn: '3h'
-                    })
+                    let token = jwt.sign({username: data.username,role: data.role,id: data.id }, 'rahasia', {expiresIn: '3h'})
                     res.send(token)
                 } else {
                     res.send('password tidak cocok')

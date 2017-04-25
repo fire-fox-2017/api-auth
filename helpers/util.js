@@ -1,27 +1,40 @@
-var db = require('../models');
+const jwt = require('jsonwebtoken');
 var util = {};
-var models = require('../models/index');
 
 
-util.isValid = function(input) {
-  return new Promise((res, rej) => {
-    db.User.findOne({
-        where: {
-          username: input
-        }
-      })
-      .then((user) => {
-        console.log(user);
-        if (user === null) {
-          rej(false)
+
+util.isValidAdmin = function(req, res, next) {
+    jwt.verify(req.headers.token, 'rahasia', (err, decoded) => {
+        if (decoded) {
+            if (decoded.role === 'admin') {
+                next()
+            } else {
+                res.send('you dont have authorize');
+            }
         } else {
-          res(user.id)
+            res.send(err)
         }
-      })
-      .catch(() => {
-        console.log('ada error di db')
-      })
-  })
+    })
+}
+
+util.isValidUserOrAdmin = function(req, res, next) {
+    jwt.verify(req.headers.token, 'rahasia', (err, decoded) => {
+        if (decoded) {
+            if (decoded.role === 'admin') {
+                next()
+            } else if (decoded.role === 'user') {
+              if(decoded.id === req.params.id){
+                next()
+              }else{
+                res.send('your user dont have authorize');
+              }
+            } else {
+                res.send('you dont have authorize');
+            }
+        } else {
+            res.send(err)
+        }
+    })
 }
 
 
