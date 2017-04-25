@@ -1,0 +1,27 @@
+{
+  "name": "api-auth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bhirmbani/api-auth.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bhirmbani/api-auth/issues"
+  },
+  "homepage": "https://github.com/bhirmbani/api-auth#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "jsonwebtoken": "^7.4.0",
+    "password-hash": "^1.2.2",
+    "pg": "^6.1.5",
+    "sequelize": "^3.30.4"
+  }
+}
