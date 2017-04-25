@@ -1,5 +1,5 @@
 const db = require('../models');
-const passwordHas = require('password-hash')
+const passwordHash = require('password-hash')
 const methods = {};
 
 methods.getAll = (req, res) => {
@@ -23,7 +23,10 @@ methods.findId = (req, res) => {
 }
 
 methods.signUp = (req, res, next) => {
-  db.User.create({username: username, password:password})
+  db.User.create({
+    username: username,
+    password:passwordHash.generate(req.body.password),
+    is_admin: req.body.role})
   .then(() => {
     res.send('success sign up a new user');
   })
@@ -31,6 +34,5 @@ methods.signUp = (req, res, next) => {
     res.send(err);
   })
 }
-
 
 module.exports = methods;
