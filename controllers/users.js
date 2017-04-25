@@ -22,5 +22,15 @@ methods.findId = (req, res) => {
   })
 }
 
+methods.signUp = (req, res, next) => {
+  db.User.create({username: username, password:password})
+  .then(() => {
+    res.send('success sign up a new user');
+  })
+  .catch(err => {
+    res.send(err);
+  })
+}
+
 
 module.exports = methods;
