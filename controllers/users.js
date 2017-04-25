@@ -52,4 +52,39 @@ methods.signIn = (req, res, next) => {
   })
 }
 
+methods.create = (req, res, next) => {
+  db.User.create({
+    username: req.body.username,
+    password: passwordHash.generate(req.body.password),
+    is_admin: req.body.role
+  })
+  .then(() => {
+    res.send(`success create new user with user name ${req.body.username}`)
+  })
+  .catch(err => {
+    res.send(err);
+  })
+}
+
+methods.delete = (req, res, next) => {
+  db.User.destroy({where: {id: req.params.id}})
+  .then(() => {
+    res.send('success delete user with id ' + req.params.id)
+  })
+  .catch(err => {
+    res.send(err);
+  })
+}
+
+methods.update = (req, res, next) => {
+  // res.send(req.body)
+  db.User.update({username: req.body.username, password: passwordHash.generate(req.body.password), is_admin: req.body.role}, {where: {id: req.params.id}})
+  .then(user => {
+    res.send(`success update user with id ${req.params.id}`);
+  })
+  .catch(err => {
+    res.send(err);
+  })
+}
+
 module.exports = methods;

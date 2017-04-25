@@ -14,8 +14,8 @@ List of users routes:
 
 Route | HTTP | Description
 ----- | ---- | -----------
-/api/signup| POST | Sign up with new user info
-/api/sigin| POST | Sign in while get an access token based on credentials
+/api/users/signup| POST | Sign up with new user info
+/api/users/sigin| POST | Sign in while get an access token based on credentials
 /api/users | GET | Get all the users info (admin only)
 /api/users/:id | GET | Get a single user info (admin and authenticated user)
 /api/users | POST | create a user (admin only)
