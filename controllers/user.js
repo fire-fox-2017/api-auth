@@ -1,13 +1,15 @@
 var db = require('../models');
 var passwordHash = require('password-hash');
-
+var jwtHelper = require('../helpers/helper');
+var jwt = require('jsonwebtoken');
+var pvtKey = "ngantuk";
 
 let control = {
   signUp: (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
     let role = req.body.role;
-    if (username !== null && password !== null && role !== null) {
+    if (username && password && role) {
       let hashedPassword = passwordHash.generate(password);
       db.User.create({username:username, password:hashedPassword, role:role}).then((data) => {
         res.send(data);
@@ -15,7 +17,7 @@ let control = {
         res.send(err);
       });
     } else {
-      res.send('username and password must not be empty')
+      res.send('username, password, and role must not be empty')
     }
   },
   signIn: (req, res) => {
@@ -24,7 +26,16 @@ let control = {
     db.User.findOne({where: {username:username}})
       .then((user) => {
         if (passwordHash.verify(password, user.password)) {
-          res.send(user);
+          let obj = {
+            username: user.username,
+            role: user.role
+          };
+          let token = jwt.sign(
+            obj,
+            pvtKey,
+            {expiresIn: '1h'}
+          );
+          res.send(token);
         } else {
           res.send('incorrect password');
         }
@@ -51,8 +62,11 @@ let control = {
     let username = req.body.username;
     let password = req.body.password;
     let role = req.body.role;
-    if (username !== null && password !== null && role !== null) {
-      db.User.create({username:username, password:password, role:role}).then((data) => {
+    // res.json(username);
+    if (username && password && role) {
+      let hashedPassword = passwordHash.generate(password);
+      db.User.create({username:username, password:hashedPassword, role:role})
+      .then((data) => {
         res.send(data);
       }).catch((err) => {
         res.send(err);
@@ -88,3 +102,7 @@ let control = {
 
 
 module.exports = control;
+
+/* user:gurame pass:bakar role:user
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imd1cmFtZSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNDkzMTE0NjM1LCJleHAiOjE0OTMxMTgyMzV9.ZjEBGTkt9zKlWvkr8wfnotNvdupnbNBe78h7NJrGzgQ
+*/
