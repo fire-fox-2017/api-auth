@@ -1,6 +1,6 @@
 var db = require('../models');
 var passwordHash = require('password-hash');
-var jwt = require('jsonwebtoken');
+var jwthelpers = require('../helpers/jwtHelper');
 
 module.exports = {
   getall: (req, res, next) => {
@@ -16,7 +16,7 @@ module.exports = {
   },
   create: (req, res, next) => {
     let username = req.body.username;
-    let password = req.body.password;
+    let password = passwordHash.generate(req.body.password);
     let role = req.body.role;
     let email = req.body.email;
     console.log(`username ${username}, password ${password}, role ${role}, email ${email}`);
@@ -66,7 +66,8 @@ module.exports = {
   },
   signup: (req, res, next) => {
     let username = req.body.username;
-    var password = passwordHash.generate(req.body.password);
+    console.log('Cekkkk ' + req.body.password);
+    let password = passwordHash.generate(req.body.password);
     let role = req.body.role;
     let email = req.body.email;
     console.log(`username ${username}, password ${password}, role ${role}, email ${email}`);
@@ -84,9 +85,10 @@ module.exports = {
   signin: (req, res, next) => {
     let username = req.body.username;
     let password = req.body.password;
-    console.log(`username ${username}`);
     db.User.findOne({
-      username: username
+      where: {
+        username: username
+      }
     }).then(user => {
       if (!user) {
         res.json({
@@ -95,14 +97,13 @@ module.exports = {
         });
       } else if (user) {
         if (passwordHash.verify(password, user.password)) {
-          var token = jwt.sign(JSON.stringify(user), 'secret');
           res.json({
             success: true,
             message: 'Enjoy your token!',
-            token: token
+            token: jwthelpers.sign(user)
           });
         } else {
-          res.send({
+          res.json({
             message: 'Authentication failed. Wrong password.'
           });
         }
